@@ -1,6 +1,6 @@
 {
   "name": "@nyby/detox-component-testing",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Component testing support for Detox and React Native",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,6 +12,11 @@
     "./test": {
       "types": "./dist/test.d.ts",
       "default": "./dist/test.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "test": ["dist/test.d.ts"]
     }
   },
   "files": [
