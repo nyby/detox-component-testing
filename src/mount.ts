@@ -56,20 +56,19 @@ export async function mount(componentName: string, props?: MountProps): Promise<
   await waitFor(element(by.id('detox-mount-id'))).toHaveText(payload.id).withTimeout(5000);
 }
 
-// Detox's expect is injected as a global by the test environment.
-// Cast to any since the library can't import 'detox' directly (peer dep).
-const detoxExpect = expect as unknown as (e: any) => any;
-
 export function expectSpy(name: string): SpyExpectation {
+  // Detox's expect is injected as a global by the test environment.
+  // Resolve lazily to avoid ReferenceError at module load time.
+  const getExpect = () => expect as unknown as (e: any) => any;
   return {
     async toHaveBeenCalled() {
-      await detoxExpect(element(by.id(`spy-${name}-count`))).not.toHaveText('0');
+      await getExpect()(element(by.id(`spy-${name}-count`))).not.toHaveText('0');
     },
     async toHaveBeenCalledTimes(n: number) {
-      await detoxExpect(element(by.id(`spy-${name}-count`))).toHaveText(String(n));
+      await getExpect()(element(by.id(`spy-${name}-count`))).toHaveText(String(n));
     },
     async lastCalledWith(...args: any[]) {
-      await detoxExpect(element(by.id(`spy-${name}-lastArgs`))).toHaveText(JSON.stringify(args));
+      await getExpect()(element(by.id(`spy-${name}-lastArgs`))).toHaveText(JSON.stringify(args));
     },
   };
 }
