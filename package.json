@@ -1,0 +1,16 @@
+{
+  "name": "@nyby/detox-component-testing",
+  "version": "1.0.0",
+  "description": "Component testing support for Detox and React Native",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./test": "./src/test.ts"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-launch-arguments": "*",
+    "detox": "*"
+  }
+}
