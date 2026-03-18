@@ -20,6 +20,18 @@ export function spy(name: string): SpyMarker {
 
 type MountProps = Record<string, string | number | boolean | SpyMarker>;
 
+export async function assertNoRenderError(): Promise<void> {
+  try {
+    await waitFor(element(by.id('detox-render-error'))).toExist().withTimeout(0);
+  } catch {
+    return; // Element not found — no render error, all good
+  }
+  // Element exists — read the error message and throw
+  const attrs = await element(by.id('detox-render-error-message')).getAttributes() as any;
+  const message = attrs.text || attrs.label || 'Unknown render error';
+  throw new Error(`Component render error: ${message}`);
+}
+
 export async function mount(componentName: string, props?: MountProps): Promise<void> {
 
   const payload = {
@@ -49,11 +61,14 @@ export async function mount(componentName: string, props?: MountProps): Promise<
     });
     await device.launchApp({ newInstance: true, launchArgs });
     appLaunched = true;
+    await waitFor(element(by.id('detox-mount-id'))).toHaveText(payload.id).withTimeout(5000);
+    await assertNoRenderError();
     return;
   }
 
   await element(by.id('detox-harness-control')).replaceText(JSON.stringify(payload));
   await waitFor(element(by.id('detox-mount-id'))).toHaveText(payload.id).withTimeout(5000);
+  await assertNoRenderError();
 }
 
 export function expectSpy(name: string): SpyExpectation {

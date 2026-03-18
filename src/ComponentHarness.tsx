@@ -1,8 +1,33 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import React, { Component as ReactComponent, useState, useRef, useCallback, ReactNode } from 'react';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import { LaunchArguments } from 'react-native-launch-arguments';
 import { getComponent } from './ComponentRegistry';
 import { getWrapper } from './configureHarness';
+
+interface ErrorBoundaryState {
+  error: Error | null;
+}
+
+class RenderErrorBoundary extends ReactComponent<{ children: ReactNode }, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { error: null };
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <ScrollView testID="detox-render-error">
+          <Text testID="detox-render-error-message">
+            {this.state.error.message}
+          </Text>
+        </ScrollView>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const PROP_PREFIX = 'detoxProp_';
 const SPY_PREFIX = 'detoxSpy_';
@@ -104,7 +129,9 @@ function ComponentRenderer({ mount }: { mount: MountPayload }) {
     <Wrapper launchArgs={mount.props || {}}>
       <View testID="component-harness-root" style={{ flex: 1 }}>
         <Text testID="detox-mount-id" style={{ height: 1 }}>{mount.id}</Text>
-        <Component {...props} />
+        <RenderErrorBoundary>
+          <Component {...props} />
+        </RenderErrorBoundary>
         {spyNames.map(name => (
           <View key={name}>
             <Text testID={`spy-${name}-count`}>{String(spyData[name].count)}</Text>
