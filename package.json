@@ -20,7 +20,9 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "tsc"
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "publish:public": "npm publish --access public"
   },
   "peerDependencies": {
     "detox": "*",
