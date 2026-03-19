@@ -22,7 +22,7 @@ type MountProps = Record<string, string | number | boolean | SpyMarker>;
 
 export async function assertNoRenderError(): Promise<void> {
   try {
-    await waitFor(element(by.id('detox-render-error'))).toExist().withTimeout(0);
+    await waitFor(element(by.id('detox-render-error'))).toExist().withTimeout(500);
   } catch {
     return; // Element not found — no render error, all good
   }
@@ -61,13 +61,24 @@ export async function mount(componentName: string, props?: MountProps): Promise<
     });
     await device.launchApp({ newInstance: true, launchArgs });
     appLaunched = true;
-    await waitFor(element(by.id('detox-mount-id'))).toHaveText(payload.id).withTimeout(5000);
+    // Harness sets id '0' for the initial launch-args mount
+    try {
+      await waitFor(element(by.id('detox-mount-id'))).toHaveText('0').withTimeout(5000);
+    } catch (e) {
+      await assertNoRenderError(); // Throws with the actual error if one exists
+      throw e; // Re-throw original timeout if no render error found
+    }
     await assertNoRenderError();
     return;
   }
 
   await element(by.id('detox-harness-control')).replaceText(JSON.stringify(payload));
-  await waitFor(element(by.id('detox-mount-id'))).toHaveText(payload.id).withTimeout(5000);
+  try {
+    await waitFor(element(by.id('detox-mount-id'))).toHaveText(payload.id).withTimeout(5000);
+  } catch (e) {
+    await assertNoRenderError();
+    throw e;
+  }
   await assertNoRenderError();
 }
 

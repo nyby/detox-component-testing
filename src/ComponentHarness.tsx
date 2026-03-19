@@ -83,7 +83,12 @@ export function ComponentHarness() {
         style={{ height: 1 }}
       />
       {activeMount && (
-        <ComponentRenderer key={activeMount.id} mount={activeMount} />
+        <>
+          <Text testID="detox-mount-id" style={{ height: 1 }}>{activeMount.id}</Text>
+          <RenderErrorBoundary>
+            <ComponentRenderer key={activeMount.id} mount={activeMount} />
+          </RenderErrorBoundary>
+        </>
       )}
     </View>
   );
@@ -128,10 +133,7 @@ function ComponentRenderer({ mount }: { mount: MountPayload }) {
   return (
     <Wrapper launchArgs={mount.props || {}}>
       <View testID="component-harness-root" style={{ flex: 1 }}>
-        <Text testID="detox-mount-id" style={{ height: 1 }}>{mount.id}</Text>
-        <RenderErrorBoundary>
-          <Component {...props} />
-        </RenderErrorBoundary>
+        <Component {...props} />
         {spyNames.map(name => (
           <View key={name}>
             <Text testID={`spy-${name}-count`}>{String(spyData[name].count)}</Text>
