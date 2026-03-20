@@ -78,12 +78,22 @@ Add a component test configuration to `detox.config.js`:
 
 ```js
 module.exports = {
-  // ... existing config
+  // ... existing app and device config
   configurations: {
     // ... existing configurations
-    "android.emu.component.debug": {
+    "ios.sim.component": {
+      device: "simulator",
+      app: "ios",
+      testRunner: {
+        args: {
+          config: "component-tests/jest.config.js",
+          _: ["src/components"]
+        }
+      }
+    },
+    "android.emu.component": {
       device: "emulator",
-      app: "android.debug",
+      app: "android",
       testRunner: {
         args: {
           config: "component-tests/jest.config.js",
@@ -220,6 +230,10 @@ Returns an assertion object for a spy:
 - `.toHaveBeenCalledTimes(n)` — spy was called exactly `n` times
 - `.lastCalledWith(...args)` — the last call's arguments match
 
+#### `assertNoRenderError()`
+
+Check whether the mounted component threw a render error. Called automatically by `mount()`, but can be used standalone after interactions that may trigger a re-render error.
+
 ## Limitations
 
 - **No JSX in tests** — Tests run in Node.js, not the React Native runtime. You cannot import components or use JSX in test files. Reference components by their registered name string.
@@ -248,3 +262,5 @@ app.component-test.js              # Component test entry (harness)
 index.js                           # Switches entry based on launch args
 detox.config.js                    # Detox config with component test configuration
 ```
+
+See the [`example/`](./example) directory for a complete working setup.
