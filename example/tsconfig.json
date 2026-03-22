@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "commonjs",
-    "importHelpers": true,
     "noEmit": true,
     "strict": true,
     "noUnusedLocals": true,

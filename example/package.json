@@ -4,39 +4,29 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "postinstall": "node scripts/postinstall.js",
-    "build:ios": "detox build --configuration ios.sim.component",
+    "build:ios": "yarn pods && detox build --configuration ios.sim.component",
     "build:android": "detox build --configuration android.emu.component",
     "test:ios": "detox test --configuration ios.sim.component",
     "test:android": "detox test --configuration android.emu.component",
-    "podInstall:ios": "cd ios && bundle exec pod install",
+    "pods": "cd ios && pod install",
     "clean:android": "pushd android && ./gradlew clean && popd"
   },
   "dependencies": {
     "@nyby/detox-component-testing": "^1.6.0",
-    "@react-native-async-storage/async-storage": "^2.1.0",
     "react": "19.2.0",
     "react-native": "0.83.0",
-    "react-native-launch-arguments": "^4.0.2",
-    "tslib": "^2.0.3"
+    "react-native-launch-arguments": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.25.3",
     "@react-native-community/cli": "20.0.2",
     "@react-native-community/cli-platform-android": "20.0.2",
     "@react-native-community/cli-platform-ios": "20.0.2",
     "@react-native/babel-preset": "0.83.0",
-    "@react-native/eslint-config": "0.83.0",
     "@react-native/metro-config": "0.83.0",
-    "@react-native/typescript-config": "0.83.0",
-    "@tsconfig/react-native": "^3.0.5",
-    "@types/fs-extra": "^9.0.13",
     "@types/jest": "^29.2.1",
     "@types/react": "^19.2.0",
     "detox": "^20.46.0",
-    "fs-extra": "^9.1.0",
     "jest": "^30.0.3",
-    "react-test-renderer": "19.2.0",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3"
   }
