@@ -13,8 +13,8 @@
     "clean:android": "pushd android && ./gradlew clean && popd"
   },
   "dependencies": {
+    "@nyby/detox-component-testing": "^1.6.0",
     "@react-native-async-storage/async-storage": "^2.1.0",
-    "@nyby/detox-component-testing": "file:..",
     "react": "19.2.0",
     "react-native": "0.83.0",
     "react-native-launch-arguments": "^4.0.2",
