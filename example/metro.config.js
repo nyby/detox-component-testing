@@ -1,7 +1,7 @@
-const path = require('path');
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const path = require("path");
+const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
 
-const componentTestingRoot = path.resolve(__dirname, '..');
+const componentTestingRoot = path.resolve(__dirname, "..");
 
 /**
  * Metro configuration
@@ -12,8 +12,11 @@ const componentTestingRoot = path.resolve(__dirname, '..');
 const config = {
   watchFolders: [componentTestingRoot],
   resolver: {
-    blockList: [/detox\/node_modules\/react-native\/.*/, /detox-component-testing\/node_modules\/.*/],
-    nodeModulesPaths: [path.resolve(__dirname, 'node_modules')],
+    blockList: [
+      /detox\/node_modules\/react-native\/.*/,
+      /detox-component-testing\/node_modules\/.*/,
+    ],
+    nodeModulesPaths: [path.resolve(__dirname, "node_modules")],
   },
 };
 

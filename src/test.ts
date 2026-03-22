@@ -1,1 +1,2 @@
-export { mount, spy, expectSpy, assertNoRenderError, SpyMarker, SpyExpectation } from './mount';
+export { mount, spy, expectSpy } from "./mount";
+export { debug } from "./debug";

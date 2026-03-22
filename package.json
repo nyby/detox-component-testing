@@ -1,6 +1,6 @@
 {
   "name": "@nyby/detox-component-testing",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "description": "Component testing support for Detox and React Native",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,11 +12,16 @@
     "./test": {
       "types": "./dist/test.d.ts",
       "default": "./dist/test.js"
+    },
+    "./environment": {
+      "default": "./dist/environment.js"
     }
   },
   "typesVersions": {
     "*": {
-      "test": ["dist/test.d.ts"]
+      "test": [
+        "dist/test.d.ts"
+      ]
     }
   },
   "files": [
@@ -24,10 +29,11 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp src/environment.js dist/environment.js",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
-    "publish:public": "npm publish --access public"
+    "publish:public": "npm publish --access public",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx}\" \"example/**/*.{js,ts,tsx}\""
   },
   "peerDependencies": {
     "detox": "*",
@@ -38,6 +44,8 @@
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-native": "^0.72.8",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.3"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

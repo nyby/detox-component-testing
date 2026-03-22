@@ -10,10 +10,10 @@ const config = {
   roots: ["<rootDir>/../src"],
   testMatch: ["**/*.component.test.ts"],
   transform: {
-    "\\.tsx?$": ["ts-jest", { tsconfig: "<rootDir>/../tsconfig.json" }]
+    "\\.tsx?$": ["ts-jest", { tsconfig: "<rootDir>/../tsconfig.json" }],
   },
   reporters: ["detox/runners/jest/reporter"],
-  verbose: true
+  verbose: true,
 };
 
 // TEST_PATH env var narrows to specific test files (set by test.sh)

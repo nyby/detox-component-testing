@@ -31,9 +31,16 @@ npm install @nyby/detox-component-testing react-native-launch-arguments
 Create `app.component-test.js` alongside your app entry:
 
 ```js
-import { AppRegistry } from 'react-native';
-import { ComponentHarness } from '@nyby/detox-component-testing';
+import React from 'react';
+import {AppRegistry, View} from 'react-native';
+import {ComponentHarness, configureHarness} from '@nyby/detox-component-testing';
 import './component-tests/registry';
+
+configureHarness({
+  wrapper: ({children}) => (
+    <View style={{flex: 1}}>{children}</View>
+  ),
+});
 
 AppRegistry.registerComponent('example', () => ComponentHarness);
 ```
@@ -43,16 +50,16 @@ AppRegistry.registerComponent('example', () => ComponentHarness);
 Create `component-tests/registry.ts` to register components for testing:
 
 ```ts
-import { registerComponent } from '@nyby/detox-component-testing';
-import { Stepper } from '../src/components/Stepper';
-import { LoginForm } from '../src/components/LoginForm';
+import {registerComponent} from '@nyby/detox-component-testing';
+import {Stepper} from '../src/components/Stepper';
+import {LoginForm} from '../src/components/LoginForm';
 
 // Auto-infer name from Component.name
-registerComponent(Stepper, { initial: 0 });
+registerComponent(Stepper, {initial: 0});
 registerComponent(LoginForm);
 
 // Or use an explicit name
-registerComponent('MyComponent', MyComponent, { someProp: 'default' });
+registerComponent('MyComponent', MyComponent, {someProp: 'default'});
 ```
 
 ### 4. Switch entry point for component tests
@@ -61,7 +68,7 @@ Update your index file to load the component test entry when running component t
 
 ```js
 // index.js
-const { LaunchArguments } = require('react-native-launch-arguments');
+const {LaunchArguments} = require('react-native-launch-arguments');
 
 if (LaunchArguments.value().detoxComponentName) {
   require('./app.component-test');
@@ -81,27 +88,27 @@ module.exports = {
   // ... existing app and device config
   configurations: {
     // ... existing configurations
-    "ios.sim.component": {
-      device: "simulator",
-      app: "ios",
+    'ios.sim.component': {
+      device: 'simulator',
+      app: 'ios',
       testRunner: {
         args: {
-          config: "component-tests/jest.config.js",
-          _: ["src/components"]
-        }
-      }
+          config: 'component-tests/jest.config.js',
+          _: ['src/components'],
+        },
+      },
     },
-    "android.emu.component": {
-      device: "emulator",
-      app: "android",
+    'android.emu.component': {
+      device: 'emulator',
+      app: 'android',
       testRunner: {
         args: {
-          config: "component-tests/jest.config.js",
-          _: ["src/components"]
-        }
-      }
-    }
-  }
+          config: 'component-tests/jest.config.js',
+          _: ['src/components'],
+        },
+      },
+    },
+  },
 };
 ```
 
@@ -112,19 +119,19 @@ Create `component-tests/jest.config.js`:
 ```js
 module.exports = {
   maxWorkers: 1,
-  globalSetup: "detox/runners/jest/globalSetup",
-  globalTeardown: "detox/runners/jest/globalTeardown",
-  testEnvironment: "detox/runners/jest/testEnvironment",
-  setupFilesAfterEnv: ["./setup.ts"],
-  testRunner: "jest-circus/runner",
+  globalSetup: 'detox/runners/jest/globalSetup',
+  globalTeardown: 'detox/runners/jest/globalTeardown',
+  testEnvironment: '@nyby/detox-component-testing/environment',
+  setupFilesAfterEnv: ['./setup.ts'],
+  testRunner: 'jest-circus/runner',
   testTimeout: 120000,
-  roots: ["<rootDir>/../src"],
-  testMatch: ["**/*.component.test.ts"],
+  roots: ['<rootDir>/../src'],
+  testMatch: ['**/*.component.test.ts'],
   transform: {
-    "\\.tsx?$": ["ts-jest", { tsconfig: "<rootDir>/../tsconfig.json" }]
+    '\\.tsx?$': ['ts-jest', {tsconfig: '<rootDir>/../tsconfig.json'}],
   },
-  reporters: ["detox/runners/jest/reporter"],
-  verbose: true
+  reporters: ['detox/runners/jest/reporter'],
+  verbose: true,
 };
 ```
 
@@ -133,8 +140,8 @@ module.exports = {
 ### Basic mounting
 
 ```ts
-import { by, element, expect } from 'detox';
-import { mount } from '@nyby/detox-component-testing/test';
+import {by, element, expect} from 'detox';
+import {mount} from '@nyby/detox-component-testing/test';
 
 describe('Stepper', () => {
   it('renders with default props', async () => {
@@ -143,7 +150,7 @@ describe('Stepper', () => {
   });
 
   it('renders with custom props', async () => {
-    await mount('Stepper', { initial: 100 });
+    await mount('Stepper', {initial: 100});
     await expect(element(by.id('counter'))).toHaveText('100');
   });
 });
@@ -154,10 +161,10 @@ describe('Stepper', () => {
 Use `spy()` to create a recording function for callback props, and `expectSpy()` to assert on it:
 
 ```ts
-import { mount, spy, expectSpy } from '@nyby/detox-component-testing/test';
+import {mount, spy, expectSpy} from '@nyby/detox-component-testing/test';
 
 it('fires onChange when incremented', async () => {
-  await mount('Stepper', { initial: 0, onChange: spy('onChange') });
+  await mount('Stepper', {initial: 0, onChange: spy('onChange')});
   await element(by.id('increment')).tap();
 
   await expectSpy('onChange').toHaveBeenCalled();
@@ -190,17 +197,17 @@ Register a component for testing. When called with just a component, the name is
 
 Root component for the test harness. Register as your app's root component in the component test entry point.
 
-#### `configureHarness({ wrapper })`
+#### `configureHarness({ wrapper? })`
 
-Set a global wrapper component for all mounted components (e.g. Redux Provider, theme provider):
+Set a global wrapper component for all mounted components:
 
 ```js
-import { Provider } from 'react-redux';
-import { configureHarness } from '@nyby/detox-component-testing';
-import { createStore } from './store';
+import {Provider} from 'react-redux';
+import {configureHarness} from '@nyby/detox-component-testing';
+import {createStore} from './store';
 
 configureHarness({
-  wrapper: ({ children, launchArgs }) => {
+  wrapper: ({children, launchArgs}) => {
     const store = createStore();
     if (launchArgs.reduxState) {
       store.dispatch(loadState(JSON.parse(launchArgs.reduxState)));
@@ -230,9 +237,46 @@ Returns an assertion object for a spy:
 - `.toHaveBeenCalledTimes(n)` — spy was called exactly `n` times
 - `.lastCalledWith(...args)` — the last call's arguments match
 
-#### `assertNoRenderError()`
+#### `debug(label?, outputDir?)`
 
-Check whether the mounted component threw a render error. Called automatically by `mount()`, but can be used standalone after interactions that may trigger a re-render error.
+Capture a screenshot and native view hierarchy for the current screen state. Useful for debugging test failures or inspecting what's on screen at any point in a test.
+
+```ts
+import {mount, debug} from '@nyby/detox-component-testing/test';
+
+it('renders the event screen', async () => {
+  await mount('EventScreen', {eventId: 'event_1'});
+  await debug('after-mount'); // writes to artifacts/debug-after-mount.{png,xml}
+});
+```
+
+Each call writes up to two files to the output directory (defaults to `<cwd>/artifacts`):
+
+- `debug-<label>.png` — screenshot
+- `debug-<label>-view.xml` — native view hierarchy
+
+If no label is provided, calls are numbered automatically (`1`, `2`, `3`, ...).
+
+### Debugging
+
+#### Custom test environment
+
+A Detox Jest environment that automatically captures debug artifacts when a test fails. Use it instead of the default Detox environment:
+
+```js
+// jest.config.js
+module.exports = {
+  testEnvironment: '@nyby/detox-component-testing/environment',
+  // ...
+};
+```
+
+On test failure, it captures:
+
+- A screenshot
+- The native view hierarchy
+
+All artifacts are written to `<cwd>/artifacts/`.
 
 ## Limitations
 

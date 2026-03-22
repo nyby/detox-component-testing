@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode } from 'react';
+import { ComponentType, ReactNode } from "react";
 
 export interface WrapperProps {
   children: ReactNode;
@@ -6,7 +6,7 @@ export interface WrapperProps {
 }
 
 export interface HarnessConfig {
-  wrapper: ComponentType<WrapperProps>;
+  wrapper?: ComponentType<WrapperProps>;
 }
 
 const DefaultWrapper = ({ children }: WrapperProps) => children;
@@ -14,7 +14,9 @@ const DefaultWrapper = ({ children }: WrapperProps) => children;
 let globalWrapper: ComponentType<WrapperProps> | null = null;
 
 export function configureHarness(config: HarnessConfig): void {
-  globalWrapper = config.wrapper;
+  if (config.wrapper) {
+    globalWrapper = config.wrapper;
+  }
 }
 
 export function getWrapper(): ComponentType<WrapperProps> {

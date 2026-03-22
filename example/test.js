@@ -1,5 +1,14 @@
-import {AppRegistry} from 'react-native';
-import {ComponentHarness} from '@nyby/detox-component-testing';
-import './component-tests/registry.ts';
+import { AppRegistry, View } from "react-native";
+import {
+  ComponentHarness,
+  configureHarness,
+} from "@nyby/detox-component-testing";
+import "./component-tests/registry.ts";
 
-AppRegistry.registerComponent('example', () => ComponentHarness);
+configureHarness({
+  wrapper: ({ children }) => (
+    <View style={{ flex: 1, paddingTop: 60 }}>{children}</View>
+  ),
+});
+
+AppRegistry.registerComponent("example", () => ComponentHarness);

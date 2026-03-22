@@ -1,14 +1,23 @@
-import React, { Component as ReactComponent, useState, useRef, useCallback, ReactNode } from 'react';
-import { View, Text, TextInput, ScrollView } from 'react-native';
-import { LaunchArguments } from 'react-native-launch-arguments';
-import { getComponent } from './ComponentRegistry';
-import { getWrapper } from './configureHarness';
+import React, {
+  Component as ReactComponent,
+  useState,
+  useRef,
+  useCallback,
+  ReactNode,
+} from "react";
+import { View, Text, TextInput, ScrollView } from "react-native";
+import { LaunchArguments } from "react-native-launch-arguments";
+import { getComponent } from "./ComponentRegistry";
+import { getWrapper } from "./configureHarness";
 
 interface ErrorBoundaryState {
   error: Error | null;
 }
 
-class RenderErrorBoundary extends ReactComponent<{ children: ReactNode }, ErrorBoundaryState> {
+class RenderErrorBoundary extends ReactComponent<
+  { children: ReactNode },
+  ErrorBoundaryState
+> {
   state: ErrorBoundaryState = { error: null };
 
   static getDerivedStateFromError(error: Error) {
@@ -29,8 +38,8 @@ class RenderErrorBoundary extends ReactComponent<{ children: ReactNode }, ErrorB
   }
 }
 
-const PROP_PREFIX = 'detoxProp_';
-const SPY_PREFIX = 'detoxSpy_';
+const PROP_PREFIX = "detoxProp_";
+const SPY_PREFIX = "detoxSpy_";
 
 interface MountPayload {
   id: string;
@@ -39,7 +48,10 @@ interface MountPayload {
   spies: string[];
 }
 
-function parseLaunchArgs(args: Record<string, any>): { props: Record<string, any>; spies: string[] } {
+function parseLaunchArgs(args: Record<string, any>): {
+  props: Record<string, any>;
+  spies: string[];
+} {
   const props: Record<string, any> = {};
   const spies: string[] = [];
   Object.entries(args).forEach(([key, value]) => {
@@ -56,9 +68,9 @@ export function ComponentHarness() {
   const launchArgs = LaunchArguments.value() as Record<string, any>;
   const [mountPayload, setMountPayload] = useState<MountPayload | null>(null);
 
-  const handleControl = useCallback((text: string) => {
+  const handleControl = useCallback((e: { nativeEvent: { text: string } }) => {
     try {
-      setMountPayload(JSON.parse(text));
+      setMountPayload(JSON.parse(e.nativeEvent.text));
     } catch (_e) {}
   }, []);
 
@@ -68,7 +80,7 @@ export function ComponentHarness() {
   } else if (launchArgs.detoxComponentName) {
     const { props, spies } = parseLaunchArgs(launchArgs);
     activeMount = {
-      id: '0',
+      id: "0",
       name: launchArgs.detoxComponentName as string,
       props,
       spies,
@@ -79,12 +91,22 @@ export function ComponentHarness() {
     <View style={{ flex: 1 }}>
       <TextInput
         testID="detox-harness-control"
-        onChangeText={handleControl}
-        style={{ height: 1 }}
+        onEndEditing={handleControl}
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 44,
+          opacity: 0.01,
+          zIndex: 9999,
+        }}
       />
       {activeMount && (
         <>
-          <Text testID="detox-mount-id" style={{ height: 1 }}>{activeMount.id}</Text>
+          <Text testID="detox-mount-id" style={{ height: 1 }}>
+            {activeMount.id}
+          </Text>
           <RenderErrorBoundary>
             <ComponentRenderer key={activeMount.id} mount={activeMount} />
           </RenderErrorBoundary>
@@ -104,7 +126,7 @@ function ComponentRenderer({ mount }: { mount: MountPayload }) {
   const spyNames = mount.spies || [];
 
   const initialData: Record<string, SpyData> = {};
-  spyNames.forEach(name => {
+  spyNames.forEach((name) => {
     initialData[name] = { count: 0, lastArgs: [] };
   });
 
@@ -112,10 +134,10 @@ function ComponentRenderer({ mount }: { mount: MountPayload }) {
 
   const spyFnsRef = useRef<Record<string, (...args: any[]) => void>>({});
   const spyProps: Record<string, (...args: any[]) => void> = {};
-  spyNames.forEach(name => {
+  spyNames.forEach((name) => {
     if (!spyFnsRef.current[name]) {
       spyFnsRef.current[name] = (...callArgs: any[]) => {
-        setSpyData(prev => ({
+        setSpyData((prev) => ({
           ...prev,
           [name]: {
             count: (prev[name]?.count || 0) + 1,
@@ -134,10 +156,14 @@ function ComponentRenderer({ mount }: { mount: MountPayload }) {
     <Wrapper launchArgs={mount.props || {}}>
       <View testID="component-harness-root" style={{ flex: 1 }}>
         <Component {...props} />
-        {spyNames.map(name => (
+        {spyNames.map((name) => (
           <View key={name}>
-            <Text testID={`spy-${name}-count`}>{String(spyData[name].count)}</Text>
-            <Text testID={`spy-${name}-lastArgs`}>{JSON.stringify(spyData[name].lastArgs)}</Text>
+            <Text testID={`spy-${name}-count`}>
+              {String(spyData[name].count)}
+            </Text>
+            <Text testID={`spy-${name}-lastArgs`}>
+              {JSON.stringify(spyData[name].lastArgs)}
+            </Text>
           </View>
         ))}
       </View>

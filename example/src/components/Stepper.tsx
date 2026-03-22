@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 interface StepperProps {
   initial?: number;
@@ -23,11 +23,21 @@ export function Stepper({ initial = 0, onChange }: StepperProps) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity testID="decrement" onPress={decrement} style={styles.button}>
+      <TouchableOpacity
+        testID="decrement"
+        onPress={decrement}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>-</Text>
       </TouchableOpacity>
-      <Text testID="counter" style={styles.counter}>{count}</Text>
-      <TouchableOpacity testID="increment" onPress={increment} style={styles.button}>
+      <Text testID="counter" style={styles.counter}>
+        {count}
+      </Text>
+      <TouchableOpacity
+        testID="increment"
+        onPress={increment}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>+</Text>
       </TouchableOpacity>
     </View>
@@ -35,8 +45,20 @@ export function Stepper({ initial = 0, onChange }: StepperProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 20 },
-  button: { width: 50, height: 50, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ddd', borderRadius: 8 },
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  button: {
+    width: 50,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ddd",
+    borderRadius: 8,
+  },
   buttonText: { fontSize: 24 },
   counter: { fontSize: 24, marginHorizontal: 20 },
 });
