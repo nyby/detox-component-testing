@@ -12,7 +12,6 @@ export interface SpyExpectation {
 const SPY_MARKER = '__detoxSpy__' as const;
 
 let mountCounter = 0;
-let appLaunched = false;
 
 export function spy(name: string): SpyMarker {
   return {[SPY_MARKER]: true, name};
@@ -60,7 +59,6 @@ export async function mount(componentName: string, props?: MountProps): Promise<
     launchArgs[`detoxSpy_${name}`] = true;
   });
   await device.launchApp({newInstance: true, launchArgs});
-  appLaunched = true;
   // Harness sets id '0' for the initial launch-args mount
   try {
     await waitFor(element(by.id('detox-mount-id')))

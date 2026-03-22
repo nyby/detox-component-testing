@@ -18,7 +18,6 @@ npm install
 ### iOS
 
 ```sh
-npm run podInstall:ios
 npm run build:ios
 ```
 

@@ -47,7 +47,3 @@ export function getComponent(name: string): ComponentEntry {
   }
   return entry;
 }
-
-export function getAll(): Record<string, ComponentEntry> {
-  return Object.fromEntries(registry);
-}

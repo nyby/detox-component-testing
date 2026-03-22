@@ -3,7 +3,7 @@ const config = {
   maxWorkers: 1,
   globalSetup: 'detox/runners/jest/globalSetup',
   globalTeardown: 'detox/runners/jest/globalTeardown',
-  testEnvironment: 'detox/runners/jest/testEnvironment',
+  testEnvironment: '@nyby/detox-component-testing/environment',
   setupFilesAfterEnv: ['./setup.ts'],
   testRunner: 'jest-circus/runner',
   testTimeout: 120000,
