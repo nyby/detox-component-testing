@@ -121,7 +121,7 @@ module.exports = {
   maxWorkers: 1,
   globalSetup: 'detox/runners/jest/globalSetup',
   globalTeardown: 'detox/runners/jest/globalTeardown',
-  testEnvironment: '@nyby/detox-component-testing/environment',
+  testEnvironment: 'detox/runners/jest/testEnvironment',
   setupFilesAfterEnv: ['./setup.ts'],
   testRunner: 'jest-circus/runner',
   testTimeout: 120000,
@@ -236,47 +236,6 @@ Returns an assertion object for a spy:
 - `.toHaveBeenCalled()` — spy was called at least once
 - `.toHaveBeenCalledTimes(n)` — spy was called exactly `n` times
 - `.lastCalledWith(...args)` — the last call's arguments match
-
-#### `debug(label?, outputDir?)`
-
-Capture a screenshot and native view hierarchy for the current screen state. Useful for debugging test failures or inspecting what's on screen at any point in a test.
-
-```ts
-import {mount, debug} from '@nyby/detox-component-testing/test';
-
-it('renders the event screen', async () => {
-  await mount('EventScreen', {eventId: 'event_1'});
-  await debug('after-mount'); // writes to artifacts/debug-after-mount.{png,xml}
-});
-```
-
-Each call writes up to two files to the output directory (defaults to `<cwd>/artifacts`):
-
-- `debug-<label>.png` — screenshot
-- `debug-<label>-view.xml` — native view hierarchy
-
-If no label is provided, calls are numbered automatically (`1`, `2`, `3`, ...).
-
-### Debugging
-
-#### Custom test environment
-
-A Detox Jest environment that automatically captures debug artifacts when a test fails. Use it instead of the default Detox environment:
-
-```js
-// jest.config.js
-module.exports = {
-  testEnvironment: '@nyby/detox-component-testing/environment',
-  // ...
-};
-```
-
-On test failure, it captures:
-
-- A screenshot
-- The native view hierarchy
-
-All artifacts are written to `<cwd>/artifacts/`.
 
 ## Limitations
 

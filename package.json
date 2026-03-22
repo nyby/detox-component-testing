@@ -1,6 +1,6 @@
 {
   "name": "@nyby/detox-component-testing",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Component testing support for Detox and React Native",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,9 +12,6 @@
     "./test": {
       "types": "./dist/test.d.ts",
       "default": "./dist/test.js"
-    },
-    "./environment": {
-      "default": "./dist/environment.js"
     }
   },
   "typesVersions": {
@@ -29,7 +26,7 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc && cp src/environment.js dist/environment.js",
+    "build": "tsc",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
     "publish:public": "npm publish --access public",
