@@ -1,7 +1,7 @@
-const { LaunchArguments } = require("react-native-launch-arguments");
+const {LaunchArguments} = require('react-native-launch-arguments');
 
 if (LaunchArguments.value().detoxComponentName) {
-  require("./test");
+  require('./test');
 } else {
-  require("./app");
+  require('./app');
 }

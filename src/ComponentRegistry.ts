@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import {ComponentType} from 'react';
 
 export interface ComponentEntry<P = any> {
   Component: ComponentType<P>;
@@ -12,16 +12,13 @@ export function registerComponent<P>(
   Component: ComponentType<P>,
   defaultProps?: Partial<P>,
 ): void;
-export function registerComponent<P>(
-  Component: ComponentType<P>,
-  defaultProps?: Partial<P>,
-): void;
+export function registerComponent<P>(Component: ComponentType<P>, defaultProps?: Partial<P>): void;
 export function registerComponent<P>(
   nameOrComponent: string | ComponentType<P>,
   componentOrProps?: ComponentType<P> | Partial<P>,
   defaultProps?: Partial<P>,
 ): void {
-  if (typeof nameOrComponent === "string") {
+  if (typeof nameOrComponent === 'string') {
     registry.set(nameOrComponent, {
       Component: componentOrProps as ComponentType<P>,
       defaultProps: (defaultProps || {}) as Partial<P>,
@@ -31,7 +28,7 @@ export function registerComponent<P>(
     const name = Component.displayName || Component.name;
     if (!name) {
       throw new Error(
-        "[detox-component-testing] Component must have a name or displayName to register without an explicit name.",
+        '[detox-component-testing] Component must have a name or displayName to register without an explicit name.',
       );
     }
     registry.set(name, {

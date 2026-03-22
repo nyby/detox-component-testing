@@ -1,7 +1,7 @@
-const path = require("path");
-const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
+const path = require('path');
+const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
-const componentTestingRoot = path.resolve(__dirname, "..");
+const componentTestingRoot = path.resolve(__dirname, '..');
 
 /**
  * Metro configuration
@@ -16,7 +16,7 @@ const config = {
       /detox\/node_modules\/react-native\/.*/,
       /detox-component-testing\/node_modules\/.*/,
     ],
-    nodeModulesPaths: [path.resolve(__dirname, "node_modules")],
+    nodeModulesPaths: [path.resolve(__dirname, 'node_modules')],
   },
 };
 

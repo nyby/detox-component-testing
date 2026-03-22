@@ -1,11 +1,11 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 
 interface GreetingProps {
   name: string;
 }
 
-export function Greeting({ name }: GreetingProps) {
+export function Greeting({name}: GreetingProps) {
   return (
     <View style={styles.container}>
       <Text testID="greeting" style={styles.text}>
@@ -16,6 +16,6 @@ export function Greeting({ name }: GreetingProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, alignItems: "center" },
-  text: { fontSize: 24 },
+  container: {padding: 20, alignItems: 'center'},
+  text: {fontSize: 24},
 });

@@ -5,6 +5,6 @@ declare const device: {
   generateViewHierarchyXml(): Promise<string>;
 };
 declare function element(matcher: any): any;
-declare const by: { id(id: string): any };
+declare const by: {id(id: string): any};
 declare function waitFor(e: any): any;
 declare function expect(e: any): any;

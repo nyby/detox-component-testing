@@ -1,5 +1,5 @@
-import { mkdirSync, renameSync, writeFileSync } from "fs";
-import { join } from "path";
+import {mkdirSync, renameSync, writeFileSync} from 'fs';
+import {join} from 'path';
 
 /**
  * Capture a screenshot and native view hierarchy to the given directory.
@@ -13,7 +13,7 @@ export async function captureArtifacts(
     generateViewHierarchyXml: () => Promise<string>;
   },
 ) {
-  mkdirSync(outputDir, { recursive: true });
+  mkdirSync(outputDir, {recursive: true});
 
   // Screenshot via Detox, then move to our artifacts dir
   try {
@@ -26,7 +26,7 @@ export async function captureArtifacts(
   // Native view hierarchy
   try {
     const xml = await deviceRef.generateViewHierarchyXml();
-    writeFileSync(join(outputDir, `debug-${name}-view.xml`), xml, "utf8");
+    writeFileSync(join(outputDir, `debug-${name}-view.xml`), xml, 'utf8');
   } catch {}
 }
 
@@ -43,6 +43,6 @@ let counter = 0;
 
 export async function debug(label?: string, outputDir?: string) {
   const name = label || String(++counter);
-  const dir = outputDir || join(process.cwd(), "artifacts");
+  const dir = outputDir || join(process.cwd(), 'artifacts');
   await captureArtifacts(name, dir, device);
 }

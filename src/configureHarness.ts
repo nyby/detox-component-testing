@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode } from "react";
+import {ComponentType, ReactNode} from 'react';
 
 export interface WrapperProps {
   children: ReactNode;
@@ -9,7 +9,7 @@ export interface HarnessConfig {
   wrapper?: ComponentType<WrapperProps>;
 }
 
-const DefaultWrapper = ({ children }: WrapperProps) => children;
+const DefaultWrapper = ({children}: WrapperProps) => children;
 
 let globalWrapper: ComponentType<WrapperProps> | null = null;
 

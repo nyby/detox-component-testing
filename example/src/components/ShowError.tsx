@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 
 export function ShowError() {
   return (
@@ -12,6 +12,6 @@ export function ShowError() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, alignItems: "center" },
-  text: { fontSize: 24 },
+  container: {padding: 20, alignItems: 'center'},
+  text: {fontSize: 24},
 });
